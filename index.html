@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-р ангийн шалгалт</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>📝 7-р ангийн шалгалт</h1>
+        <p>Мэдээллийн технологийн хичээл</p>
+    </header>
+
+    <!-- Сурагчийн мэдээлэл -->
+    <section id="student-section" class="card">
+
+        <h2>Сурагчийн мэдээлэл</h2>
+
+        <label for="studentName">Нэр:</label>
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Нэрээ оруулна уу"
+            autocomplete="off"
+        >
+
+        <label for="studentClass">Анги:</label>
+        <select id="studentClass">
+            <option value="">Анги сонгоно уу</option>
+            <option value="7А">7А</option>
+            <option value="7Б">7Б</option>
+            <option value="7В">7В</option>
+            <option value="7Г">7Г</option>
+            <option value="7Д">7Д</option>
+        </select>
+
+        <button id="startBtn" class="main-btn">
+            Шалгалт эхлүүлэх
+        </button>
+
+    </section>
+
+
+    <!-- Шалгалт -->
+    <section id="quiz-section" class="card hidden">
+
+        <div class="quiz-top">
+            <span id="questionNumber">Асуулт 1 / 10</span>
+            <span id="studentDisplay"></span>
+        </div>
+
+        <div class="progress-container">
+            <div id="progressBar"></div>
+        </div>
+
+        <div id="quiz"></div>
+
+        <button id="nextBtn" class="main-btn">
+            Дараагийн асуулт →
+        </button>
+
+    </section>
+
+
+    <!-- Үр дүн -->
+    <section id="result-section" class="card hidden">
+
+        <div class="result-icon">🎉</div>
+
+        <h2>Шалгалт дууслаа!</h2>
+
+        <p class="result-name">
+            Сурагч: <strong id="resultName"></strong>
+        </p>
+
+        <div class="score-box">
+            <div>
+                <span>Оноо</span>
+                <strong id="resultScore"></strong>
+            </div>
+
+            <div>
+                <span>Хувь</span>
+                <strong id="resultPercent"></strong>
+            </div>
+        </div>
+
+        <p id="sendMessage" class="send-message">
+            Дүнг Google Sheets рүү илгээж байна...
+        </p>
+
+        <button onclick="location.reload()" class="main-btn">
+            Дахин шалгалт өгөх
+        </button>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

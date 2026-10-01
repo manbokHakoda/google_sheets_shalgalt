@@ -1,0 +1,259 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #f5f7fa);
+    min-height: 100vh;
+    padding: 20px;
+    color: #222;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+}
+
+/* Header */
+
+header {
+    background: linear-gradient(135deg, #1976d2, #512da8);
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 15px;
+}
+
+/* Card */
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 22px;
+    color: #333;
+}
+
+/* Form */
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    background: white;
+}
+
+input:focus,
+select:focus {
+    border-color: #1976d2;
+}
+
+/* Buttons */
+
+.main-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1976d2, #512da8);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.main-btn:hover {
+    transform: translateY(-2px);
+}
+
+.main-btn:active {
+    transform: scale(0.98);
+}
+
+/* Quiz */
+
+.quiz-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 9px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+#progressBar {
+    height: 100%;
+    width: 10%;
+    background: linear-gradient(90deg, #1976d2, #7b1fa2);
+    transition: width 0.3s;
+}
+
+/* Question */
+
+.question {
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: #fafafa;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.option:hover {
+    border-color: #1976d2;
+    background: #eef6ff;
+}
+
+.option.selected {
+    border-color: #1976d2;
+    background: #e3f2fd;
+    font-weight: bold;
+}
+
+/* Result */
+
+.result-icon {
+    text-align: center;
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+#result-section h2 {
+    color: #1976d2;
+}
+
+.result-name {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.score-box {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.score-box div {
+    flex: 1;
+    background: #f3f6fa;
+    padding: 20px 10px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.score-box span {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.score-box strong {
+    font-size: 30px;
+    color: #1976d2;
+}
+
+.send-message {
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Hidden */
+
+.hidden {
+    display: none;
+}
+
+/* Mobile */
+
+@media (max-width: 500px) {
+
+    body {
+        padding: 10px;
+    }
+
+    header {
+        padding: 20px 10px;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    .card {
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .option {
+        font-size: 15px;
+        padding: 14px;
+    }
+
+    .score-box strong {
+        font-size: 25px;
+    }
+}
