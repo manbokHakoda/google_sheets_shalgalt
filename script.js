@@ -1,423 +1,347 @@
-// =====================================================
-// GOOGLE APPS SCRIPT WEB APP URL
-// =====================================================
-//
-// Энд өөрийн Google Apps Script Web App URL-ээ оруулна.
-//
-// Жишээ:
-// const WEB_APP_URL =
-// "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
+/* =========================================================
+   9-Р АНГИЙН МЭДЭЭЛЭЛ ЗҮЙН ШАЛГАЛТ
+   Google Sheets холболттой script.js
+   ========================================================= */
 
+/*
+   ЭНД Google Apps Script Web App URL-аа оруулна.
+
+   Жишээ:
+   const WEB_APP_URL =
+       "https://script.google.com/macros/s/ТАНЫ_DEPLOYMENT_ID/exec";
+*/
 const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbz_KQZHWrgZpAcAjPqloSu-V0xB1HepCt2nXwvHEt5fPa80IYqjdGVoMH1P8r8Er9mY/exec";
+    "https://script.google.com/macros/s/AKfycbwQBYgfE3OmHwOSie0CFDsfIqlwC7xfa0BUw2gcKojLN6pAjnon3fZT8EcivhRjkQX9sg/exec";
 
+/* Зөв хариултын түлхүүр */
+const correctAnswers = {
+    q1: "B",
+    q2: "B",
+    q3: "D",
+    q4: "B",
+    q5: "B",
+    q6: "B",
+    q7: "A",
+    q8: "C",
+    q9: "B",
+    q10: "C"
+};
 
-// =====================================================
-// ШАЛГАЛТЫН АСУУЛТУУД
-// =====================================================
+/* ---------------------------------------------------------
+   Туслах функц
+   --------------------------------------------------------- */
+function showSheetStatus(message, type) {
+    const box = document.getElementById("sheetStatus");
 
-const questions = [
-    {
-        question: "Компьютерийн үндсэн төхөөрөмж аль нь вэ?",
-        options: [
-            "Гар",
-            "Дэлгэц",
-            "Процессор",
-            "Чихэвч"
-        ],
-        answer: 2
-    },
+    if (!box) return;
 
-    {
-        question: "HTML ямар зориулалттай вэ?",
-        options: [
-            "Вэб хуудасны бүтэц үүсгэх",
-            "Зураг засах",
-            "Дуу бичих",
-            "Видео тоглуулах"
-        ],
-        answer: 0
-    },
+    box.style.display = "block";
+    box.textContent = message;
 
-    {
-        question: "CSS ямар зориулалттай вэ?",
-        options: [
-            "Өгөгдөл хадгалах",
-            "Вэб хуудасны загвар, өнгө үзэмж тохируулах",
-            "Компьютер асаах",
-            "Файл устгах"
-        ],
-        answer: 1
-    },
-
-    {
-        question: "JavaScript-ийн үндсэн үүрэг юу вэ?",
-        options: [
-            "Вэб хуудсыг интерактив болгох",
-            "Зөвхөн зураг хадгалах",
-            "Компьютер угсрах",
-            "Принтер засах"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "Интернетэд веб хуудас үзэхэд ямар програм ашигладаг вэ?",
-        options: [
-            "Browser",
-            "Calculator",
-            "Paint",
-            "Notepad"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "URL гэж юу вэ?",
-        options: [
-            "Веб хуудасны хаяг",
-            "Компьютерийн гар",
-            "Зургийн формат",
-            "Дууны файл"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "Google Chrome гэж юу вэ?",
-        options: [
-            "Вэб хөтөч",
-            "Үйлдлийн систем",
-            "Видео камер",
-            "Принтер"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "1 byte хэдэн bit-тэй вэ?",
-        options: [
-            "2 bit",
-            "4 bit",
-            "8 bit",
-            "16 bit"
-        ],
-        answer: 2
-    },
-
-    {
-        question: "Компьютерийн мэдээллийг түр хадгалдаг санах ой аль нь вэ?",
-        options: [
-            "RAM",
-            "Keyboard",
-            "Mouse",
-            "Monitor"
-        ],
-        answer: 0
-    },
-
-    {
-        question: "Вэб сайтыг интернетэд байрлуулахыг юу гэж нэрлэдэг вэ?",
-        options: [
-            "Hosting",
-            "Typing",
-            "Printing",
-            "Scanning"
-        ],
-        answer: 0
+    if (type === "success") {
+        box.style.background = "#f0fdf4";
+        box.style.color = "#166534";
+        box.style.borderColor = "#86efac";
+    } else if (type === "error") {
+        box.style.background = "#fef2f2";
+        box.style.color = "#991b1b";
+        box.style.borderColor = "#fca5a5";
+    } else {
+        box.style.background = "#eff6ff";
+        box.style.color = "#1d4ed8";
+        box.style.borderColor = "#93c5fd";
     }
-];
+}
 
+/* ---------------------------------------------------------
+   Өнөөдрийн огноо
+   --------------------------------------------------------- */
+window.addEventListener("DOMContentLoaded", function () {
 
-// =====================================================
-// ХУВЬСАГЧ
-// =====================================================
+    const dateInput = document.getElementById("examDate");
 
-let currentQuestion = 0;
-let score = 0;
-let selectedAnswer = null;
+    if (!dateInput) return;
 
-let studentName = "";
-let studentClass = "";
+    const today = new Date();
 
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-// =====================================================
-// HTML ELEMENT
-// =====================================================
+    dateInput.value = `${year}-${month}-${day}`;
+});
 
-const studentSection =
-    document.getElementById("student-section");
+/* ---------------------------------------------------------
+   Google Sheets рүү дүн илгээх
+   --------------------------------------------------------- */
+async function sendResultToGoogleSheets(data) {
 
-const quizSection =
-    document.getElementById("quiz-section");
+    if (
+        !WEB_APP_URL ||
+        WEB_APP_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"
+    ) {
+        showSheetStatus(
+            "⚠️ Google Sheets URL тохируулаагүй байна. script.js дотор WEB_APP_URL-аа оруулна уу.",
+            "error"
+        );
+        return false;
+    }
 
-const resultSection =
-    document.getElementById("result-section");
+    showSheetStatus(
+        "⏳ Дүнг Google Sheets рүү илгээж байна...",
+        "loading"
+    );
 
-const startBtn =
-    document.getElementById("startBtn");
+    try {
 
-const nextBtn =
-    document.getElementById("nextBtn");
+        /*
+          text/plain ашигласнаар browser CORS preflight үүсгэхээс
+          зайлсхийж, Google Apps Script doPost(e) руу JSON текст явуулна.
+        */
+        await fetch(WEB_APP_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(data)
+        });
 
-const quiz =
-    document.getElementById("quiz");
+        /*
+          no-cors үед browser серверийн response-г унших боломжгүй.
+          Гэхдээ request амжилттай илгээгдсэн тохиолдолд энд хүрнэ.
+        */
+        showSheetStatus(
+            "✅ Дүнг Google Sheets рүү илгээлээ. Багш Sheet1-ээс шалгана уу.",
+            "success"
+        );
 
-const questionNumber =
-    document.getElementById("questionNumber");
+        return true;
 
-const progressBar =
-    document.getElementById("progressBar");
+    } catch (error) {
 
-const studentDisplay =
-    document.getElementById("studentDisplay");
+        console.error("Google Sheets error:", error);
 
+        showSheetStatus(
+            "❌ Дүн илгээхэд алдаа гарлаа. Google Apps Script URL болон deployment-ээ шалгана уу.",
+            "error"
+        );
 
-// =====================================================
-// ШАЛГАЛТ ЭХЛҮҮЛЭХ
-// =====================================================
+        return false;
+    }
+}
 
-startBtn.addEventListener("click", function () {
+/* ---------------------------------------------------------
+   ШАЛГАЛТЫГ ШАЛГАХ
+   --------------------------------------------------------- */
+async function submitExam() {
 
-    studentName =
+    const studentName =
         document.getElementById("studentName").value.trim();
 
-    studentClass =
-        document.getElementById("studentClass").value;
+    const className =
+        document.getElementById("className").value.trim();
 
+    const examDate =
+        document.getElementById("examDate").value;
+
+    /* Нэр шалгах */
     if (studentName === "") {
-        alert("Нэрээ оруулна уу.");
-        return;
-    }
 
-    if (studentClass === "") {
-        alert("Ангиа сонгоно уу.");
-        return;
-    }
+        alert("⚠️ Сурагчийн нэрээ оруулна уу.");
 
-    currentQuestion = 0;
-    score = 0;
-
-    studentDisplay.textContent =
-        studentName + " - " + studentClass;
-
-    studentSection.classList.add("hidden");
-    quizSection.classList.remove("hidden");
-
-    showQuestion();
-});
-
-
-// =====================================================
-// АСУУЛТ ХАРУУЛАХ
-// =====================================================
-
-function showQuestion() {
-
-    const q = questions[currentQuestion];
-
-    selectedAnswer = null;
-
-    questionNumber.textContent =
-        "Асуулт " +
-        (currentQuestion + 1) +
-        " / " +
-        questions.length;
-
-    const progress =
-        ((currentQuestion + 1) / questions.length) * 100;
-
-    progressBar.style.width = progress + "%";
-
-    let html = "";
-
-    html += `
-        <div class="question">
-            ${currentQuestion + 1}. ${q.question}
-        </div>
-    `;
-
-    q.options.forEach(function (option, index) {
-
-        html += `
-            <button
-                class="option"
-                data-index="${index}">
-                ${String.fromCharCode(65 + index)}. ${option}
-            </button>
-        `;
-    });
-
-    quiz.innerHTML = html;
-
-    const optionButtons =
-        document.querySelectorAll(".option");
-
-    optionButtons.forEach(function (button) {
-
-        button.addEventListener("click", function () {
-
-            optionButtons.forEach(function (btn) {
-                btn.classList.remove("selected");
-            });
-
-            button.classList.add("selected");
-
-            selectedAnswer =
-                Number(button.dataset.index);
-        });
-    });
-
-
-    if (currentQuestion === questions.length - 1) {
-        nextBtn.textContent = "Шалгалт дуусгах ✓";
-    } else {
-        nextBtn.textContent = "Дараагийн асуулт →";
-    }
-}
-
-
-// =====================================================
-// ДАРААГИЙН АСУУЛТ
-// =====================================================
-
-nextBtn.addEventListener("click", function () {
-
-    if (selectedAnswer === null) {
-        alert("Хариултаа сонгоно уу.");
-        return;
-    }
-
-    const correctAnswer =
-        questions[currentQuestion].answer;
-
-    if (selectedAnswer === correctAnswer) {
-        score++;
-    }
-
-    currentQuestion++;
-
-    if (currentQuestion < questions.length) {
-
-        showQuestion();
-
-    } else {
-
-        finishQuiz();
-    }
-});
-
-
-// =====================================================
-// ШАЛГАЛТ ДУУСГАХ
-// =====================================================
-
-function finishQuiz() {
-
-    quizSection.classList.add("hidden");
-    resultSection.classList.remove("hidden");
-
-    const total = questions.length;
-
-    const percent =
-        Math.round((score / total) * 100);
-
-    document.getElementById("resultName").textContent =
-        studentName + " (" + studentClass + ")";
-
-    document.getElementById("resultScore").textContent =
-        score + " / " + total;
-
-    document.getElementById("resultPercent").textContent =
-        percent + "%";
-
-    sendResult(
-        studentName,
-        studentClass,
-        score,
-        total
-    );
-}
-
-
-// =====================================================
-// GOOGLE SHEETS РҮҮ ДҮН ИЛГЭЭХ
-// =====================================================
-
-function sendResult(name, className, score, total) {
-
-    const message =
-        document.getElementById("sendMessage");
-
-    // URL оруулаагүй бол
-    if (
-        WEB_APP_URL ===
-        "ЭНД_ӨӨРИЙН_GOOGLE_APPS_SCRIPT_URL_ЭЭ_ОРУУЛНА"
-    ) {
-
-        message.textContent =
-            "⚠️ Google Apps Script URL тохируулаагүй байна. " +
-            "Оноо гарсан боловч Google Sheets рүү илгээгдсэнгүй.";
+        document.getElementById("studentName").focus();
 
         return;
     }
 
+    let score = 0;
 
-    message.textContent =
-        "⏳ Дүнг Google Sheets рүү илгээж байна...";
+    /* Бүх асуултыг шалгах */
+    for (let i = 1; i <= 10; i++) {
 
+        const question =
+            document.querySelector(
+                `.question[data-question="${i}"]`
+            );
 
-    const data = {
+        const selected =
+            document.querySelector(
+                `input[name="q${i}"]:checked`
+            );
 
-        name: name,
+        if (!question) continue;
 
-        className: className,
+        /* Өмнөх өнгийг арилгах */
+        question.classList.remove("correct", "wrong");
 
-        score: score,
+        /* Хариулаагүй */
+        if (!selected) {
 
-        total: total
+            question.classList.add("wrong");
 
-    };
+            continue;
+        }
 
+        /* Зөв хариулт */
+        if (selected.value === correctAnswers[`q${i}`]) {
 
-    fetch(WEB_APP_URL, {
+            score++;
 
-        method: "POST",
-
-        body: JSON.stringify(data)
-
-    })
-
-    .then(function (response) {
-
-        return response.json();
-
-    })
-
-    .then(function (result) {
-
-        if (result.success) {
-
-            message.textContent =
-                "✅ Дүн амжилттай илгээгдлээ. " +
-                "Багш Google Sheets-ээс шалгана.";
+            question.classList.add("correct");
 
         } else {
 
-            message.textContent =
-                "⚠️ Дүн илгээхэд асуудал гарлаа.";
-
+            question.classList.add("wrong");
         }
+    }
 
-    })
+    /* Оноо */
+    document.getElementById("scoreDisplay").value =
+        `${score} / 10`;
 
-    .catch(function (error) {
+    document.getElementById("finalScore").textContent =
+        `${score} / 10`;
 
-        console.error(error);
+    /* Сурагчийн мэдээлэл */
+    document.getElementById("resultName").textContent =
+        studentName;
 
-        message.textContent =
-            "⚠️ Google Sheets рүү дүн илгээхэд алдаа гарлаа. " +
-            "Интернет холболтоо шалгана уу.";
+    document.getElementById("resultClass").textContent =
+        className || "—";
 
+    document.getElementById("resultDate").textContent =
+        examDate || "—";
+
+    /* Үр дүнгийн тайлбар */
+    let message = "";
+
+    if (score === 10) {
+
+        message = "🌟 Маш сайн! Бүх асуултад зөв хариуллаа.";
+
+    } else if (score >= 8) {
+
+        message = "👏 Сайн байна! Таны мэдлэг сайн байна.";
+
+    } else if (score >= 6) {
+
+        message = "👍 Боломжийн байна. Зарим сэдвээ дахин давтаарай.";
+
+    } else if (score >= 4) {
+
+        message = "📚 Дахин давтаж, хичээлээ сайн бэлдэх хэрэгтэй.";
+
+    } else {
+
+        message = "💪 Хичээгээрэй! Хичээлээ дахин судлаарай.";
+    }
+
+    document.getElementById("resultMessage").textContent =
+        message;
+
+    /* Progress bar */
+    const percentage = score * 10;
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+    /* Result хэсгийг харуулах */
+    const result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+    /* Хариу сонголтыг түгжих */
+    document.querySelectorAll(
+        'input[type="radio"]'
+    ).forEach(function (radio) {
+
+        radio.disabled = true;
+    });
+
+    /* Google Sheets-д хадгалах өгөгдөл */
+    const resultData = {
+        name: studentName,
+        className: className,
+        date: examDate,
+        score: score,
+        total: 10
+    };
+
+    /* Google Sheets рүү илгээх */
+    await sendResultToGoogleSheets(resultData);
+
+    /* Дүн рүү автоматаар очих */
+    setTimeout(function () {
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }, 200);
+}
+
+/* ---------------------------------------------------------
+   ДАХИН ЭХЛҮҮЛЭХ
+   --------------------------------------------------------- */
+function resetExam() {
+
+    const confirmReset =
+        confirm("Шалгалтыг дахин эхлүүлэх үү?");
+
+    if (!confirmReset) {
+        return;
+    }
+
+    /* Бүх сонголтыг цэвэрлэх */
+    document.querySelectorAll(
+        'input[type="radio"]'
+    ).forEach(function (radio) {
+
+        radio.checked = false;
+        radio.disabled = false;
+    });
+
+    /* Question class цэвэрлэх */
+    document.querySelectorAll(
+        ".question"
+    ).forEach(function (question) {
+
+        question.classList.remove(
+            "correct",
+            "wrong"
+        );
+    });
+
+    /* Оноо буцаах */
+    document.getElementById(
+        "scoreDisplay"
+    ).value = "— / 10";
+
+    /* Result нуух */
+    document.getElementById(
+        "result"
+    ).style.display = "none";
+
+    /* Progress bar */
+    document.getElementById(
+        "progressBar"
+    ).style.width = "0";
+
+    /* Google Sheets status нуух */
+    const sheetStatus =
+        document.getElementById("sheetStatus");
+
+    if (sheetStatus) {
+        sheetStatus.style.display = "none";
+        sheetStatus.textContent = "";
+    }
+
+    /* Дээд хэсэг рүү очих */
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
     });
 }

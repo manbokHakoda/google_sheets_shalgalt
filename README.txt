@@ -1,89 +1,46 @@
-# 7-р ангийн шалгалтын систем
+9-р ангийн Мэдээлэл зүйн шалгалт
+Google Sheets холболттой хувилбар
 
-Энэ системээр сурагч гар утсаараа шалгалт өгч, нэр, анги, оноо нь Google Sheets-д автоматаар хадгалагдана.
+ФАЙЛУУД
+--------
+index.html
+script.js
+Code.gs
 
-## 1. Google Sheets үүсгэх
+ТОХИРУУЛАХ ДАРААЛАЛ
+--------------------
+1. Google Sheets шинэ файл үүсгэнэ.
+2. Sheet1 нэрийг яг "Sheet1" болгоно.
+3. 1-р мөрөнд:
+   Огноо | Сурагчийн нэр | Анги | Шалгалтын огноо | Оноо | Нийт
+4. Extensions -> Apps Script нээнэ.
+5. Code.gs доторх кодыг хуулж оруулна.
+6. Deploy -> New deployment -> Web app.
+7. Execute as: Me.
+8. Who has access: Anyone.
+9. Deploy хийнэ.
+10. Гарч ирсэн Web app URL-ийг хуулна.
+11. script.js дотор:
+   const WEB_APP_URL = "ЭНД_URL_ОРОХ";
+   хэсэгт URL-ээ оруулна.
+12. index.html болон script.js хоёрыг нэг folder-т хадгална.
+13. Vercel-д deploy хийж болно.
 
-Google Drive → New → Google Sheets
+АНХААРАХ
+---------
+URL нь Google Sheet-ийн URL биш.
+Google Apps Script Web App URL байна.
+URL нь ихэвчлэн /exec гэж төгсөнө.
 
-Жишээ нэр:
+ЖИШЭЭ
+------
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/XXXXXXXX/exec";
 
-7-р ангийн шалгалтын дүн
+Шалгалт дуусмагц:
+Сурагчийн нэр + анги + шалгалтын огноо + оноо + нийт оноо
+Sheet1-ийн шинэ мөрөнд нэмэгдэнэ.
 
-## 2. Apps Script
-
-Google Sheets дотроос:
-
-Extensions → Apps Script
-
-Code.gs файлын бүх кодыг устгаад энэ ZIP доторх `Code.gs`-ийн кодыг хуулна.
-
-`TO_EMAIL` хэсгийг багшийн Gmail хаягаар солино.
-
-Жишээ:
-
-const TO_EMAIL = "bagshiinemail@gmail.com";
-
-Save хийнэ.
-
-## 3. Web App болгох
-
-Apps Script:
-
-Deploy → New deployment
-
-Select type → Web app
-
-Execute as → Me
-
-Who has access → Anyone
-
-Deploy → зөвшөөрөл өгнө.
-
-Дараа нь гарч ирсэн Web app URL-ийг хуулна.
-
-## 4. script.js-д URL хийх
-
-`script.js` файлыг нээнэ.
-
-Энэ мөрийг олно:
-
-const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
-
-URL-ээ оруулна.
-
-Жишээ:
-
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/XXXXXXXX/exec";
-
-## 5. Vercel-д байрлуулах
-
-Энэ 3 файлыг нэг folder-т байрлуулна:
-
-7r-angi-shalgalt/
-├── index.html
-├── style.css
-└── script.js
-
-Vercel дээр New Project → энэ folder-оо upload/deploy хийнэ.
-
-## 6. Үр дүн
-
-Сурагч шалгалт өгөх бүрд Google Sheets-ийн:
-
-Шалгалтын дүн
-
-sheet-д:
-
-Огноо | Сурагчийн нэр | Анги | Оноо | Нийт оноо | Хувь | Үнэлгээ | Хариултууд
-
-гэсэн мэдээлэл нэмэгдэнэ.
-
-Мөн `TO_EMAIL` дээр заасан багшийн Gmail рүү шинэ дүн бүрээр мэдэгдэл очно.
-
-## Анхаарах зүйл
-
-- Google Apps Script URL-ийг зөв оруулах шаардлагатай.
-- Apps Script deployment-ийн access нь `Anyone` байх ёстой.
-- Багшийн Gmail хаягийг Code.gs-ийн `TO_EMAIL` хэсэгт өөрчилнө.
-- Шалгалтын асуултуудыг `script.js` доторх `questions` хэсгээс өөрчилж болно.
+CORS-ийн тухай:
+script.js нь POST хүсэлтийг text/plain + no-cors горимоор илгээж,
+Google Apps Script-ийн doPost(e) нь JSON текстийг уншина.
