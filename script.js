@@ -11,7 +11,7 @@
        "https://script.google.com/macros/s/ТАНЫ_DEPLOYMENT_ID/exec";
 */
 const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbwQBYgfE3OmHwOSie0CFDsfIqlwC7xfa0BUw2gcKojLN6pAjnon3fZT8EcivhRjkQX9sg/exec";
+    "https://script.google.com/macros/s/AKfycbwlaDOfoWqLvzoS0EcCqWNVVujR3HDk3U6WFqlrIIDvqQnCXK_t_Q69DnJVpNaf53chkw/exec";
 
 /* Зөв хариултын түлхүүр */
 const correctAnswers = {
